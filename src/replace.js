@@ -1,4 +1,3 @@
-//import findAndReplaceDOMText from 'findandreplacedomtext';
 import bullshitTerms from './terms';
 
 function revealBullshitInternal(text) {
