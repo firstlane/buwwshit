@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Uwuifier from 'uwuifier';
+import { revealBullshit } from './replace.js'
 
 class InputBox extends React.Component {
     constructor(props) {
@@ -44,8 +45,12 @@ class App extends React.Component {
     }
 
     buwwuify() {
+        var bullshit = revealBullshit(this.state.inputText);
+
         const uwu = new Uwuifier();
-        this.setState({outputText: uwu.uwuifySentence(this.state.inputText)});
+
+        const buwwushit = uwu.uwuifySentence(bullshit);
+        this.setState({outputText: buwwushit});
     }
 
     render() {
