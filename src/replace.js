@@ -23,8 +23,9 @@ function findAndReplaceText(text, regex, replaceFunc) {
 }
 
 function censor(str, find, replace){
-	var escapedFind=find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-    return str.replace(new RegExp(escapedFind, 'g'), replace);
+	var esc = find.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    var reg = new RegExp(esc, 'ig');
+    return str.replace(reg, replace);
 }
 
 export function revealBullshit(text, censored) {
