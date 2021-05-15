@@ -45,7 +45,7 @@ class App extends React.Component {
     }
 
     buwwuify(input) {
-        var bullshit = revealBullshit(input);
+        var bullshit = revealBullshit(input, false);
 
         const uwu = new Uwuifier();
 

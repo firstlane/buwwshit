@@ -22,12 +22,26 @@ function findAndReplaceText(text, regex, replaceFunc) {
     return text.replace(regex, replaceFunc);
 }
 
-export function revealBullshit(text) {
-    const bullshitRe = new RegExp(`\\b(${bullshitTerms.join('|')})\\b`, 'gi');
+function censor(str, find, replace){
+	var escapedFind=find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+    return str.replace(new RegExp(escapedFind, 'g'), replace);
+}
 
-    return findAndReplaceText(
+export function revealBullshit(text, censored) {
+    const bullshitRe = new RegExp(`\\b(${bullshitTerms.join('|')})\\b`, 'gi');
+	
+	var bsText = findAndReplaceText(
         text,
         bullshitRe,
         revealBullshitInternal
     );
+	
+	if (censored){
+		var censoredText = censor(bsText,"shit","poopoo");
+	
+		return censoredText;
+	}
+	else{
+		return bsText;
+	}
 }
