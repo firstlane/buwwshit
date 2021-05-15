@@ -44,8 +44,8 @@ class App extends React.Component {
         };
     }
 
-    buwwuify() {
-        var bullshit = revealBullshit(this.state.inputText);
+    buwwuify(input) {
+        var bullshit = revealBullshit(input);
 
         const uwu = new Uwuifier();
 
@@ -57,9 +57,9 @@ class App extends React.Component {
         return (
             <div>
                 <div>
-                    <InputBox key={1} onChange={(text) => this.setState({inputText: text})}/>
+                    <InputBox id="inputBox" key={1} onChange={(text) => this.setState({inputText: text})}/>
                 </div>
-                <button onClick={() => this.buwwuify()}>
+                <button onClick={() => this.buwwuify(document.getElementsByName('input-box')[0].value)}>
                     Disrupt the competition with some Buwwushit
                 </button>
                 <div>
