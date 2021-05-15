@@ -44,8 +44,8 @@ class App extends React.Component {
         };
     }
 
-    buwwuify(input) {
-        var bullshit = revealBullshit(input, false);
+    buwwuify(input, censored) {
+        var bullshit = revealBullshit(input, censored);
 
         const uwu = new Uwuifier();
 
@@ -59,9 +59,11 @@ class App extends React.Component {
                 <div>
                     <InputBox id="inputBox" key={1} onChange={(text) => this.setState({inputText: text})}/>
                 </div>
-                <button onClick={() => this.buwwuify(document.getElementsByName('input-box')[0].value)}>
+                <button onClick={() => this.buwwuify(document.getElementsByName('input-box')[0].value, document.getElementsByName('censorCheckbox')[0].checked)}>
                     Disrupt the competition with some Buwwushit
                 </button>
+				<input type="checkbox" id="censorCheckbox" name="censorCheckbox" value="censored" />
+				<label for="censorCheckbox"> Censored?</label>
                 <div>
                     <OutputBox key={2} text={this.state.outputText}/>
                 </div>
