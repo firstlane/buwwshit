@@ -23,7 +23,7 @@ function findAndReplaceText(text, regex, replaceFunc) {
 }
 
 function censor(str, find, replace){
-	var esc = find.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+	var esc = find.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
     var reg = new RegExp(esc, 'ig');
     return str.replace(reg, replace);
 }
