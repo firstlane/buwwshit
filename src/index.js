@@ -35,9 +35,30 @@ class OutputBox extends React.Component {
     }
 }
 
-const ActionsInit      = 0.075;
+class Slider extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            label: props.label,
+            value: props.value,
+        };
+    }
+
+    render() {
+        return (
+            <div>
+                <label>{this.state.label}</label>
+                <br/>
+                <input type="range" min="0" max="100" step="0.01" value={this.state.value} />
+                <br/>
+            </div>
+        );
+    }
+}
+
+const ActionsInit      = 0.07;
 const ExclamationsInit = 1;
-const FacesInit        = 0.5;
+const FacesInit        = 0.05;
 const StuttersInit     = 0.1;
 const WordsInit        = 1;
 
@@ -83,26 +104,11 @@ class App extends React.Component {
                     <InputBox id="inputBox" key={1}/>
                 </div>
                 <div>
-                    <label>Actions</label>
-                    <br/>
-                    <input type="range" min="0" max="100" value="0.075" id="actions-slider" />
-                    <br/>
-                    <label>Exclamations</label>
-                    <br/>
-                    <input type="range" min="0" max="100" value="1" id="exclamations-slider" />
-                    <br/>
-                    <label>Faces</label>
-                    <br/>
-                    <input type="range" min="0" max="100" value="0.5" id="faces-slider" />
-                    <br/>
-                    <label>Stutters</label>
-                    <br/>
-                    <input type="range" min="0" max="100" value="0.1" id="stutters-slider" />
-                    <br/>
-                    <label>Words</label>
-                    <br/>
-                    <input type="range" min="0" max="100" value="1" id="words-slider" />
-                    <br/>
+                    <Slider label="Actions" value={ActionsInit} />
+                    <Slider label="Exclamations" value={ExclamationsInit} />
+                    <Slider label="Faces" value={FacesInit} />
+                    <Slider label="Stutters" value={StuttersInit} />
+                    <Slider label="Words" value={WordsInit} />
                 </div>
                 <button onClick={() => this.buwwuify(document.getElementsByName('input-box')[0].value)}>
                     Disrupt the competition with some Buwwshit
