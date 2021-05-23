@@ -27,7 +27,3 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: npm run build
-    # Copy output
-    # Clone firstlane.github.io
-    # Paste to buwwshit folder
-    # Commit and push to firstlane.github.io
