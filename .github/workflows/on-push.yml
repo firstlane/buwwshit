@@ -4,7 +4,7 @@
 name: Node.js CI
 
 on:
-  pull_request:
+  push:
     branches: [ master ]
 
 jobs:
@@ -27,4 +27,17 @@ jobs:
         GITHUB_PAT: ${{ secrets.BUWWSHIT_TOKEN }}
     - run: npm install
     - run: npm run build
+    - run: cd build
+    - name: Push to firstlane.github.io
+      uses: andstor/copycat-action@v3
+      with:
+        personal_token: ${{ secrets.BUWWSHIT_TOKEN }}
+        src_path: /.
+        src_branch: master
+        dst_path: buwwshit
+        dst_owner: firstlane
+        dst_repo_name: firstlane.github.io
+        dst_branch: master
+        clean: true
+        commit_message: Automated update from buwwshit/master
 
