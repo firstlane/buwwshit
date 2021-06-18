@@ -27,3 +27,19 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: npm run build
+    - env:
+        GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    - run: |
+        cd ..
+        git clone https://user:$GITHUB_PAT@github.com/firstlane/firstlane.github.io
+
+        cd buwwshit/build
+        cp -r . ../firstlane.github.io/buwwshit
+
+        cd ../../firstlane.github.io
+        git config user.name "firstlane"
+        git config user.email "firstlane5203@gmail.com"
+        git add .
+        git commit -m "Automated update from buwwshit/master"
+        git push origin master
+
