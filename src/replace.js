@@ -23,16 +23,20 @@ function findAndReplaceText(text, regex, replaceFunc) {
 }
 
 function censor(str, find, replace) {
-	var esc = find.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+    var esc = find.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
     var reg = new RegExp(esc, 'ig');
     return str.replace(reg, replace);
 }
 
-export function replaceUrls(text) {
-    
+export function revealDOMBullshitCensored(portion, match) {
+    return revealBullshit(portion.text, true);
 }
 
-export function revealBullshit(text, censored) {
+export function revealDOMBullshit(portion, match) {
+    return revealBullshit(portion.text);
+}
+
+export function revealBullshit(text, censored = false) {
     const bullshitRe = new RegExp(`\\b(${bullshitTerms.join('|')})\\b`, 'gi');
 
     var bsText = findAndReplaceText(

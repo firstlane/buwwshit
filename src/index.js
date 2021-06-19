@@ -2,13 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Uwuifier from 'uwuifier';
 import findAndReplaceDOMText from 'findandreplacedomtext';
-import { revealBullshit } from './replace.js'
+import { revealBullshit, revealDOMBullshit, revealDOMBullshitCensored } from './replace.js'
+import urlRedirects from './redirects.js';
 
 class InputBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            text: "Place your corporate text here to be buwwupoopoo-ified.",
+            text: "",
         };
     }
 
@@ -19,7 +20,7 @@ class InputBox extends React.Component {
 
     render() {
         return (
-            <textarea onChange={(newText) => this.updateText(newText.target.value)} name="input-box" rows="20" cols="100">
+            <textarea placeholder="Place your corporate text here to be buwwupoopoo-ified." onChange={(newText) => this.updateText(newText.target.value)} name="input-box" rows="20" cols="100">
                 {this.state.text}
             </textarea>
         );
@@ -38,9 +39,9 @@ class OutputBox extends React.Component {
 
 const topLevelDiv = "buwwshitTopLevelDiv";
 
-function domReplace({text}) {
+function uwuify({text}) {
     const uwu = new Uwuifier();
-    let newText = uwu.uwuifySentence(revealBullshit(text, false));
+    let newText = uwu.uwuifySentence(revealBullshit(text));
     return newText;
 }
 
@@ -57,23 +58,46 @@ class App extends React.Component {
         var htmlObject = document.createElement('div');
         htmlObject.id = topLevelDiv;
         htmlObject.innerHTML = input;
+        var doc = new DOMParser().parseFromString(htmlObject.innerHTML, "text/html");
 
-        let re = new RegExp(/.+/)
+        if (doc.body.firstChild === doc.body.lastChild) {
+            // User input plaintext
+            const uwu = new Uwuifier();
+            let newText = uwu.uwuifySentence(revealBullshit(input, censored));
 
-        findAndReplaceDOMText(htmlObject, {
-            preset: 'prose',
-            find: re,
-            replace: domReplace
-        });
+            this.setState({outputText: newText});
+        }
+        else {
+            // User input HTML
+            if (censored) {
+                findAndReplaceDOMText(doc.getRootNode(), {
+                    preset: 'prose',
+                    find: /.+/,
+                    replace: revealDOMBullshitCensored
+                });
+            }
+            else {
+                findAndReplaceDOMText(doc.getRootNode(), {
+                    preset: 'prose',
+                    find: /.+/,
+                    replace: revealDOMBullshit
+                });
+            }
 
-        if (censored)
-            findAndReplaceDOMText(htmlObject, {
+            findAndReplaceDOMText(doc.getRootNode(), {
                 preset: 'prose',
-                find: 'buwwshit',
-                replace: 'buwwpoopoo'
+                find: /.+/,
+                replace: uwuify
             });
 
-        this.setState({outputText: htmlObject.innerHTML});
+            var anchors = doc.getElementsByTagName('a');
+            for (var i = 0; i < anchors.length; i++) {
+                var index = Math.floor(Math.random() * (0, urlRedirects.length - 1));
+                anchors[i].href = urlRedirects[index];
+            }
+
+            this.setState({outputText: doc.firstChild.innerHTML});
+        }
     }
 
     render() {
