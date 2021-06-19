@@ -40,7 +40,7 @@ const topLevelDiv = "buwwshitTopLevelDiv";
 
 function domReplace({text}) {
     const uwu = new Uwuifier();
-    let newText = uwu.uwuifySentence(revealBullshit(text, true));
+    let newText = uwu.uwuifySentence(revealBullshit(text, false));
     return newText;
 }
 
@@ -65,6 +65,13 @@ class App extends React.Component {
             find: re,
             replace: domReplace
         });
+
+        if (censored)
+            findAndReplaceDOMText(htmlObject, {
+                preset: 'prose',
+                find: 'buwwshit',
+                replace: 'buwwpoopoo'
+            });
 
         this.setState({outputText: htmlObject.innerHTML});
     }
