@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Uwuifier from 'uwuifier';
+import findAndReplaceDOMText from 'findandreplacedomtext';
 import { revealBullshit } from './replace.js'
 
 class InputBox extends React.Component {
@@ -35,6 +36,14 @@ class OutputBox extends React.Component {
     }
 }
 
+const topLevelDiv = "buwwshitTopLevelDiv";
+
+function domReplace({text}) {
+    const uwu = new Uwuifier();
+    let newText = uwu.uwuifySentence(revealBullshit(text, true));
+    return newText;
+}
+
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -45,12 +54,19 @@ class App extends React.Component {
     }
 
     buwwuify(input, censored) {
-        var bullshit = revealBullshit(input, censored);
+        var htmlObject = document.createElement('div');
+        htmlObject.id = topLevelDiv;
+        htmlObject.innerHTML = input;
 
-        const uwu = new Uwuifier();
+        let re = new RegExp(/.+/)
 
-        const buwwushit = uwu.uwuifySentence(bullshit);
-        this.setState({outputText: buwwushit});
+        findAndReplaceDOMText(htmlObject, {
+            preset: 'prose',
+            find: re,
+            replace: domReplace
+        });
+
+        this.setState({outputText: htmlObject.innerHTML});
     }
 
     render() {
@@ -62,8 +78,8 @@ class App extends React.Component {
                 <button onClick={() => this.buwwuify(document.getElementsByName('input-box')[0].value, document.getElementsByName('censorCheckbox')[0].checked)}>
                     Disrupt the competition with some Buwwushit
                 </button>
-				<input type="checkbox" id="censorCheckbox" name="censorCheckbox" value="censored" />
-				<label for="censorCheckbox"> Censored?</label>
+                <input type="checkbox" id="censorCheckbox" name="censorCheckbox" value="censored" />
+                <label for="censorCheckbox"> Censored?</label>
                 <div>
                     <OutputBox key={2} text={this.state.outputText}/>
                 </div>
