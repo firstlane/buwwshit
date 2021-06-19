@@ -27,17 +27,14 @@ jobs:
         GITHUB_PAT: ${{ secrets.BUWWSHIT_TOKEN }}
     - run: npm install
     - run: npm run build
-    - run: cd build
     - name: Push to firstlane.github.io
-      uses: andstor/copycat-action@v3
+      uses: manzoorwanijk/action-deploy-to-repo@master
       with:
-        personal_token: ${{ secrets.BUWWSHIT_TOKEN }}
-        src_path: /.
-        src_branch: master
-        dst_path: buwwshit
-        dst_owner: firstlane
-        dst_repo_name: firstlane.github.io
-        dst_branch: master
-        clean: true
-        commit_message: Automated update from buwwshit/master
-
+        src_dir: build
+        target_owner: firstlane
+        target_repo: firstlane.github.io
+        target_dir: buwwshit
+        target_branch: master
+        access_token: ${{ secrets.BUWWSHIT_TOKEN }}
+        cleanup_command: "rm -rf buwwshit/*"
+        commit_msg: 'Automated update from buwwshit/master'

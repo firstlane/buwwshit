@@ -27,4 +27,3 @@ jobs:
         GITHUB_PAT: ${{ secrets.BUWWSHIT_TOKEN }}
     - run: npm install
     - run: npm run build
-
