@@ -22,27 +22,31 @@ function findAndReplaceText(text, regex, replaceFunc) {
     return text.replace(regex, replaceFunc);
 }
 
-function censor(str, find, replace){
+function censor(str, find, replace) {
 	var esc = find.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
     var reg = new RegExp(esc, 'ig');
     return str.replace(reg, replace);
 }
 
+export function replaceUrls(text) {
+    
+}
+
 export function revealBullshit(text, censored) {
     const bullshitRe = new RegExp(`\\b(${bullshitTerms.join('|')})\\b`, 'gi');
-	
-	var bsText = findAndReplaceText(
+
+    var bsText = findAndReplaceText(
         text,
         bullshitRe,
         revealBullshitInternal
     );
-	
-	if (censored){
-		var censoredText = censor(bsText,"shit","poopoo");
-	
-		return censoredText;
-	}
-	else{
-		return bsText;
-	}
+
+    if (censored) {
+        var censoredText = censor(bsText,"shit","poopoo");
+
+        return censoredText;
+    }
+    else {
+        return bsText;
+    }
 }
