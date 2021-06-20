@@ -69,6 +69,14 @@ class App extends React.Component {
         }
         else {
             // User input HTML
+
+            // Remove newlines from input to work-around
+            // an issue where findAndReplaceDOMText fails
+            // to find extra text after a newline.
+            var docString = new XMLSerializer().serializeToString(doc);
+            docString = docString.replace(/(\r\n|\n|\r)/gm, "");
+            doc = new DOMParser().parseFromString(docString, "text/html");
+
             if (censored) {
                 findAndReplaceDOMText(doc.getRootNode(), {
                     preset: 'prose',
@@ -96,7 +104,10 @@ class App extends React.Component {
                 anchors[i].href = urlRedirects[index];
             }
 
-            this.setState({outputText: doc.firstChild.innerHTML});
+            var output = new XMLSerializer().serializeToString(doc);
+            if (!output.startsWith("<!DOCTYPE html>"))
+                output = "<!DOCTYPE html>" + output;
+            this.setState({outputText: output});
         }
     }
 
