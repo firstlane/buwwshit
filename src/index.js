@@ -70,31 +70,33 @@ class App extends React.Component {
         else {
             // User input HTML
 
-            // Remove newlines from input to work-around
-            // an issue where findAndReplaceDOMText fails
-            // to find extra text after a newline.
+            // Remove newlines from input. This is a work-around
+            // since findAndReplaceDOMText won't always match against
+            // an entire section of text that has newlines in it.
             var docString = new XMLSerializer().serializeToString(doc);
             docString = docString.replace(/(\r\n|\n|\r)/gm, "");
             doc = new DOMParser().parseFromString(docString, "text/html");
 
+            var findRegex = /.+/;
+
             if (censored) {
                 findAndReplaceDOMText(doc.getRootNode(), {
                     preset: 'prose',
-                    find: /.+/,
+                    find: findRegex,
                     replace: revealDOMBullshitCensored
                 });
             }
             else {
                 findAndReplaceDOMText(doc.getRootNode(), {
                     preset: 'prose',
-                    find: /.+/,
+                    find: findRegex,
                     replace: revealDOMBullshit
                 });
             }
 
             findAndReplaceDOMText(doc.getRootNode(), {
                 preset: 'prose',
-                find: /.+/,
+                find: findRegex,
                 replace: uwuify
             });
 
